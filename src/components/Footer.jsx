@@ -7,7 +7,7 @@ export default function Footer() {
         </p>
 
         <p className="italic text-center">
-          STRICTLY Health Information Management (HIM)
+          A Legacy of Purpose and Impact
         </p>
       </div>
     </footer>

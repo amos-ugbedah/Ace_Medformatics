@@ -47,8 +47,7 @@ export default function Contact() {
             <FaEnvelope className="text-acePurple text-2xl mt-1" />
             <div>
               <h3 className="font-semibold text-gray-800">Email</h3>
-              <p>info@acemedformatics.com</p>
-              <p>support@acemedformatics.com</p>
+              <p> acemedformatics20@gmail.com</p>              
             </div>
           </div>
 
@@ -57,7 +56,7 @@ export default function Contact() {
             <div>
               <h3 className="font-semibold text-gray-800">Phone</h3>
               <p>+234 703 228 7331</p>
-              <p>+234 802 345 6789</p>
+              <p>+234 803 563 1828</p>
             </div>
           </div>
 
