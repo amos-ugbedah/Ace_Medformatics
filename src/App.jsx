@@ -13,7 +13,7 @@ const Research = lazy(() => import("./pages/Research"));
 const Mentorship = lazy(() => import("./pages/Mentorship"));
 const Collaboration = lazy(() => import("./pages/Collaboration"));
 const Programs = lazy(() => import("./pages/Programs"));
-const ProgramDetail = lazy(() => import("./pages/ProgramDetail"));
+const ProgramMaterials = lazy(() => import("./pages/ProgramMaterials")); // updated
 const Contact = lazy(() => import("./pages/Contact"));
 
 export default function App() {
@@ -33,10 +33,13 @@ export default function App() {
             <Route path="/mentorship" element={<Mentorship />} />
             <Route path="/collaboration" element={<Collaboration />} />
             <Route path="/programs" element={<Programs />} />
+
+            {/* Updated route for program materials */}
             <Route
-              path="/programs/:programId"
-              element={<ProgramDetail />}
+              path="/programs/:slug/materials"
+              element={<ProgramMaterials />}
             />
+
             <Route path="/contact" element={<Contact />} />
           </Routes>
         </Suspense>
