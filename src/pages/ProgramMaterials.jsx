@@ -1,4 +1,3 @@
-// src/pages/ProgramMaterials.jsx
 import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -8,11 +7,12 @@ import { useProgramMaterials } from "../hooks/useProgramMaterials";
 export default function ProgramMaterials() {
   const { slug } = useParams();
   const [program, setProgram] = useState(null);
-  const { materials, loading } = useProgramMaterials(program?.id);
+  const [loadingProgram, setLoadingProgram] = useState(true);
 
-  // Fetch the program details by slug
+  // Fetch program details by slug
   useEffect(() => {
     async function fetchProgram() {
+      setLoadingProgram(true);
       try {
         const { data, error } = await supabase
           .from("programs")
@@ -21,22 +21,29 @@ export default function ProgramMaterials() {
           .single();
 
         if (error) throw error;
+
         setProgram(data);
       } catch (error) {
         console.error("Error fetching program:", error.message);
+        setProgram(null);
+      } finally {
+        setLoadingProgram(false);
       }
     }
 
     fetchProgram();
   }, [slug]);
 
-  if (!program) return <p className="text-center py-10">Loading program...</p>;
-  if (loading) return <p className="text-center py-10">Loading materials...</p>;
+  // Fetch materials only when program.id is available
+  const { materials, loading: loadingMaterials } = useProgramMaterials(program?.id);
+
+  if (loadingProgram) return <p className="text-center py-10">Loading program...</p>;
+  if (!program) return <p className="text-center py-10 text-red-500">Program not found.</p>;
+  if (loadingMaterials) return <p className="text-center py-10">Loading materials...</p>;
 
   return (
     <section className="bg-aceLight py-16 px-4">
       <div className="max-w-4xl mx-auto">
-        {/* Program Title */}
         <h1 className="text-3xl font-bold text-acePurple mb-6">{program.title}</h1>
 
         {materials.length === 0 ? (
@@ -68,7 +75,6 @@ export default function ProgramMaterials() {
           </div>
         )}
 
-        {/* Back Link */}
         <div className="mt-10 text-center">
           <Link
             to="/programs"

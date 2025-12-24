@@ -1,33 +1,40 @@
-// src/hooks/useProgramMaterials.js
 import { useState, useEffect } from "react";
 import { supabase } from "../lib/supabaseClient";
 
 export function useProgramMaterials(programId) {
   const [materials, setMaterials] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    if (!programId) return; // only fetch when programId exists
+
+    let isMounted = true;
+
     async function fetchMaterials() {
-      if (!programId) return; // only fetch when programId exists
       setLoading(true);
       try {
         const { data, error } = await supabase
           .from("program_materials")
-          .select("*")
+          .select("id, title, file_url, created_at")
           .eq("program_id", programId)
           .order("created_at", { ascending: true });
 
         if (error) throw error;
-        setMaterials(data);
+
+        if (isMounted) setMaterials(data || []);
       } catch (error) {
         console.error("Error fetching program materials:", error.message);
-        setMaterials([]);
+        if (isMounted) setMaterials([]);
       } finally {
-        setLoading(false);
+        if (isMounted) setLoading(false);
       }
     }
 
     fetchMaterials();
+
+    return () => {
+      isMounted = false;
+    };
   }, [programId]);
 
   return { materials, loading };

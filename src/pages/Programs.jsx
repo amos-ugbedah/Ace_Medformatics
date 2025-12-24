@@ -1,13 +1,20 @@
+// src/pages/Programs.jsx
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { usePrograms } from "../hooks/usePrograms";
 import { useProgramCategories } from "../hooks/useProgramCategories";
 
 export default function Programs() {
-  const { programs, loading } = usePrograms();
-  const { categories } = useProgramCategories(); // fetch category names
+  const { programs, loading, error } = usePrograms();
+  const { categories } = useProgramCategories();
 
   if (loading) return <p className="text-center py-10">Loading programs...</p>;
+  if (error)
+    return (
+      <p className="text-center py-10 text-red-500">
+        Error loading programs. Please try again later.
+      </p>
+    );
 
   // Helper: get category name from category_id
   const getCategoryName = (categoryId) => {
@@ -30,7 +37,8 @@ export default function Programs() {
             Our Programs
           </h1>
           <p className="mt-4 max-w-3xl mx-auto text-gray-700">
-            Ace Medformatics delivers structured educational programs that serve as an ecosystem for Health Information Management resources and materials.
+            Ace Medformatics delivers structured educational programs that serve as
+            an ecosystem for Health Information Management resources and materials.
           </p>
         </motion.header>
 
@@ -43,7 +51,7 @@ export default function Programs() {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.6, delay: index * 0.15 }}
+              transition={{ duration: 0.6, delay: index * 0.1 }}
               whileHover={{ scale: 1.03 }}
             >
               <div>
@@ -64,7 +72,7 @@ export default function Programs() {
                 </p>
               </div>
 
-              {/* Updated link: include /materials to match route */}
+              {/* Link to program materials */}
               <Link
                 to={`/programs/${program.slug}/materials`}
                 className="mt-6 inline-block bg-aceGreen text-white py-2 px-4 rounded-md hover:bg-acePurple transition font-medium text-sm"

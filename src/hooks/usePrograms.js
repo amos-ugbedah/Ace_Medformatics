@@ -1,28 +1,50 @@
+// src/hooks/usePrograms.js
 import { useState, useEffect } from "react";
-import { supabase } from "../lib/supabaseClient"; // Adjust the path if your supabase client is elsewhere
+import { supabase } from "../lib/supabaseClient";
 
-export function usePrograms(categoryId = null) {
-  const [programs, setPrograms] = useState([]);
-  const [loading, setLoading] = useState(true);
+// Simple in-memory cache for programs
+let programsCache = null;
+
+export function usePrograms() {
+  const [programs, setPrograms] = useState(programsCache || []);
+  const [loading, setLoading] = useState(!programsCache);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
+    if (programsCache) return; // Use cache if available
+
+    let isMounted = true;
+
     const fetchPrograms = async () => {
-      let query = supabase
-        .from("programs")
-        .select("*") // simple fetch, no join
-        .order("created_at", { ascending: true });
+      setLoading(true);
+      setError(null);
 
-      if (categoryId) query = query.eq("category_id", categoryId);
+      try {
+        const { data, error } = await supabase
+          .from("programs")
+          .select("id, title, slug, description, category_id")
+          .order("created_at", { ascending: true });
 
-      const { data, error } = await query;
+        if (error) throw error;
 
-      if (error) console.error("Error fetching programs:", error);
-      else setPrograms(data);
-
-      setLoading(false);
+        if (!isMounted) return;
+        programsCache = data || [];
+        setPrograms(data || []);
+      } catch (err) {
+        console.error("Error fetching programs:", err.message);
+        setError(err);
+        setPrograms([]);
+      } finally {
+        if (isMounted) setLoading(false);
+      }
     };
-    fetchPrograms();
-  }, [categoryId]);
 
-  return { programs, loading };
+    fetchPrograms();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  return { programs, loading, error };
 }
