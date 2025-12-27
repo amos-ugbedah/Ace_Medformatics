@@ -9,10 +9,10 @@ export default function TeamPreview() {
   if (error) return null;
 
   return (
-    <section className="bg-aceLight py-16">
+    <section className="bg-aceLight dark:bg-gray-900 py-16 transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4">
         <motion.h2
-          className="text-3xl md:text-4xl font-bold text-center text-acePurple mb-12"
+          className="text-3xl md:text-4xl font-bold text-center text-acePurple dark:text-aceGreen mb-12 transition-colors duration-300"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -24,7 +24,7 @@ export default function TeamPreview() {
           {team.map((member, index) => (
             <motion.div
               key={member.id}
-              className="bg-white rounded-2xl shadow-lg p-6 text-center"
+              className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 text-center transition-colors duration-300"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -39,10 +39,12 @@ export default function TeamPreview() {
                 />
               </div>
 
-              <h3 className="font-semibold text-lg">
+              <h3 className="font-semibold text-lg text-aceDark dark:text-gray-100 transition-colors duration-300">
                 {member.full_name}
               </h3>
-              <p className="text-gray-600">{member.role}</p>
+              <p className="text-gray-600 dark:text-gray-300 transition-colors duration-300">
+                {member.role}
+              </p>
             </motion.div>
           ))}
         </div>
@@ -50,7 +52,7 @@ export default function TeamPreview() {
         <div className="text-center mt-12">
           <Link
             to="/team"
-            className="inline-block bg-acePurple text-white px-6 py-3 rounded-full hover:bg-opacity-90 transition"
+            className="inline-block bg-acePurple dark:bg-aceGreen text-white px-6 py-3 rounded-full hover:bg-opacity-90 transition-colors duration-300"
           >
             View Full Team
           </Link>

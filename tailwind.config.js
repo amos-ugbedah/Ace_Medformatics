@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
+  darkMode: "class", // REQUIRED for manual theme switching
   content: [
     "./index.html",
     "./src/**/*.{js,jsx}",
@@ -15,10 +16,10 @@ export default {
         aceBeige: "#e3d6b4",
       },
       fontFamily: {
-        sans: ['Poppins', 'sans-serif'],
-        serif: ['Merriweather', 'serif'],
-      }
+        sans: ["Poppins", "sans-serif"],
+        serif: ["Merriweather", "serif"],
+      },
     },
   },
   plugins: [],
-}
+};

@@ -9,27 +9,22 @@ export default function About() {
   const [galleryImages, setGalleryImages] = useState([]);
   const [selectedIndex, setSelectedIndex] = useState(null);
 
-  // Fetch About content & gallery from Supabase
   useEffect(() => {
     async function fetchAbout() {
       try {
-        // Fetch sections text
         const { data: sections, error: sectionError } = await supabase
           .from("about_sections")
           .select("*")
           .order("order_index", { ascending: true });
 
-        if (sectionError) console.error(sectionError);
-        else setAboutContent(sections);
+        if (!sectionError) setAboutContent(sections);
 
-        // Fetch gallery images
         const { data: images, error: imgError } = await supabase
           .from("about_gallery")
           .select("url, alt")
           .order("display_order", { ascending: true });
 
-        if (imgError) console.error(imgError);
-        else setGalleryImages(images);
+        if (!imgError) setGalleryImages(images);
       } catch (err) {
         console.error(err);
       }
@@ -38,22 +33,26 @@ export default function About() {
   }, []);
 
   return (
-    <div className="bg-aceLight min-h-screen py-16 px-4">
+    <div className="min-h-screen py-16 px-4 bg-aceLight dark:bg-gray-900 transition-colors duration-300 font-sans text-gray-900 dark:text-gray-200">
       <div className="max-w-5xl mx-auto">
         <h1 className="text-4xl md:text-5xl font-bold text-acePurple mb-10 text-center">
           About Ace Medformatics
         </h1>
 
-        {aboutContent.map((section, idx) => (
-          <SectionCard key={idx} title={section.title}>
+        {aboutContent.map((section) => (
+          <SectionCard
+            key={section.id}
+            title={section.title}
+            className="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-200 transition-colors duration-300"
+          >
             {section.type === "list" ? (
-              <ul className="list-disc list-inside space-y-2 text-gray-700">
-                {section.items.map((item, i) => (
+              <ul className="list-disc list-inside space-y-2">
+                {section.items?.map((item, i) => (
                   <li key={i}>{item}</li>
                 ))}
               </ul>
             ) : (
-              <p className="text-gray-700 leading-relaxed">{section.content}</p>
+              <p className="leading-relaxed">{section.content}</p>
             )}
           </SectionCard>
         ))}

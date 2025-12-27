@@ -16,11 +16,8 @@ export default function Team() {
           .select("id, full_name, role, bio, profile_image_url, socials")
           .order("display_order", { ascending: true });
 
-        if (error) {
-          console.error("Error fetching team:", error);
-        } else {
-          setTeam(data);
-        }
+        if (error) console.error("Error fetching team:", error);
+        else setTeam(data);
       } catch (err) {
         console.error("Unexpected error fetching team:", err);
       } finally {
@@ -31,13 +28,13 @@ export default function Team() {
     fetchTeam();
   }, []);
 
-  if (loading) return <p className="text-center py-20">Loading team...</p>;
+  if (loading) return <p className="text-center py-20 text-gray-700 dark:text-gray-300">Loading team...</p>;
 
   return (
-    <section className="bg-aceLight min-h-screen py-20 px-4">
+    <section className="bg-aceLight dark:bg-gray-900 min-h-screen py-20 px-4 transition-colors duration-300 font-sans">
       <div className="max-w-6xl mx-auto text-center">
         <motion.h1
-          className="text-4xl md:text-5xl font-bold text-acePurple mb-16"
+          className="text-4xl md:text-5xl font-bold text-acePurple dark:text-aceGreen mb-16"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
