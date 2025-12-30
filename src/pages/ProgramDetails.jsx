@@ -1,56 +1,114 @@
-import { useParams } from "react-router-dom";
-import { useProgramMaterials } from "../hooks/useProgramMaterials";
+import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
+import { useState } from "react";
+import { usePrograms } from "../hooks/usePrograms";
+import { useProgramCategories } from "../hooks/useProgramCategories";
+import ProgramReviewSubmit from "../components/ProgramReviewSubmit";
 
-export default function ProgramDetails() {
-  const { slug } = useParams();
-  const programId = parseInt(slug.split("-").pop());
-  const { materials, loading } = useProgramMaterials(programId);
+export default function Programs() {
+  const { programs, loading, error } = usePrograms();
+  const { categories } = useProgramCategories();
+  const [selectedProgramId, setSelectedProgramId] = useState(null);
 
-  if (loading) {
+  if (loading)
     return (
-      <p className="py-16 text-center text-gray-600">
-        Loading materials...
+      <p className="py-12 text-center text-gray-500 dark:text-gray-400 font-inter">
+        Loading programs...
       </p>
     );
-  }
+
+  if (error)
+    return (
+      <p className="py-12 text-center text-red-500 font-inter">
+        Error loading programs. Please try again later.
+      </p>
+    );
+
+  const getCategoryName = (categoryId) => {
+    const category = categories.find((c) => c.id === categoryId);
+    return category ? category.name : "";
+  };
 
   return (
-    <section className="px-4 py-16 transition-colors bg-aceLight">
-      <div className="max-w-5xl mx-auto">
-        {/* Page Title */}
-        <h1 className="mb-8 text-3xl font-semibold tracking-tight text-center md:text-4xl text-acePurple">
-          Program Materials
-        </h1>
+    <section className="min-h-screen px-4 py-16 transition-colors duration-300 bg-aceLight dark:bg-gray-900 font-inter">
+      <div className="mx-auto text-center max-w-7xl">
+        {/* Page Header */}
+        <motion.header
+          className="mb-16"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+        >
+          <h1 className="text-4xl font-bold md:text-5xl text-acePurple dark:text-aceGreen">
+            Our Programs
+          </h1>
+          <p className="max-w-3xl mx-auto mt-4 text-lg leading-relaxed text-gray-700 dark:text-gray-200">
+            Ace Medformatics delivers structured educational programs that serve as
+            an ecosystem for Health Information Management resources and materials.
+          </p>
+        </motion.header>
 
-        {/* Materials Grid */}
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {materials.map((material) => (
-            <div
-              key={material.id}
-              className="flex flex-col justify-between p-6 transition-shadow bg-white shadow-md rounded-xl hover:shadow-lg"
+        {/* Programs Grid */}
+        <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-3">
+          {programs.map((program, index) => (
+            <motion.div
+              key={program.id}
+              className="flex flex-col justify-between p-8 transition-shadow duration-300 bg-white shadow-md dark:bg-gray-800 rounded-2xl hover:shadow-xl"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.6, delay: index * 0.1 }}
+              whileHover={{ scale: 1.03 }}
             >
-              <div>
-                <h3 className="text-lg font-semibold text-acePurple">
-                  {material.title}
+              {/* Top: Title + Review Button */}
+              <div className="flex items-start justify-between mb-4">
+                <h3 className="text-xl font-semibold text-acePurple dark:text-aceGreen">
+                  {program.title}
                 </h3>
-
-                <p className="mt-2 text-sm leading-relaxed text-gray-600">
-                  Type: {material.material_type}
-                </p>
+                <button
+                  onClick={() => setSelectedProgramId(program.id)}
+                  className="px-3 py-1 text-sm font-medium text-white transition-colors duration-300 rounded-md bg-acePurple hover:bg-aceGreen"
+                >
+                  Review
+                </button>
               </div>
 
-              <a
-                href={material.material_url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-block px-4 py-2 mt-6 text-sm font-medium text-center text-white transition rounded-md bg-aceGreen hover:bg-acePurple"
+              {program.category_id && (
+                <p className="mt-2 text-sm font-medium text-acePurple dark:text-aceGreen">
+                  {getCategoryName(program.category_id)}
+                </p>
+              )}
+
+              <p className="mt-4 text-base leading-relaxed text-gray-600 dark:text-gray-200">
+                {program.description}
+              </p>
+
+              <Link
+                to={`/programs/${program.slug}/materials`}
+                className="inline-block px-5 py-2 mt-6 text-sm font-medium text-center transition-colors duration-300 rounded-md bg-aceGreen text-aceDark dark:text-white hover:bg-acePurple hover:text-white"
               >
-                Open Material
-              </a>
-            </div>
+                View Materials
+              </Link>
+            </motion.div>
           ))}
         </div>
       </div>
+
+      {/* Review Modal */}
+      {selectedProgramId && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="relative w-full max-w-3xl p-6 mx-4 bg-white rounded-xl dark:bg-gray-800">
+            <button
+              className="absolute text-gray-600 top-4 right-4 dark:text-gray-300"
+              onClick={() => setSelectedProgramId(null)}
+            >
+              ✕
+            </button>
+            <ProgramReviewSubmit programId={selectedProgramId} />
+          </div>
+        </div>
+      )}
     </section>
   );
 }

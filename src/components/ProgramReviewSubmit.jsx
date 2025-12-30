@@ -1,9 +1,7 @@
-// src/pages/testimonials/TestimonialsSubmit.jsx
 import { useState } from "react";
-import { supabase } from "../../lib/supabaseClient";
-import { Link } from "react-router-dom";
+import { supabase } from "../lib/supabaseClient";
 
-export default function TestimonialsSubmit() {
+export default function ProgramReviewSubmit({ programId, onSubmitSuccess }) {
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [content, setContent] = useState("");
@@ -19,14 +17,15 @@ export default function TestimonialsSubmit() {
     setError("");
 
     if (!consent) {
-      setError("You must consent to have your testimonial displayed publicly.");
+      setError("You must consent to have your review displayed publicly.");
       return;
     }
 
     setLoading(true);
 
-    const { error: insertError } = await supabase.from("testimonials").insert([
+    const { error: insertError } = await supabase.from("program_reviews").insert([
       {
+        program_id: programId,
         full_name: fullName,
         email: email || null,
         content,
@@ -37,36 +36,28 @@ export default function TestimonialsSubmit() {
     ]);
 
     if (insertError) {
-      setError("Failed to submit testimonial.");
       console.error(insertError);
+      setError("Failed to submit review. Please try again.");
     } else {
-      setMessage("Thank you! Your testimonial is submitted for review.");
+      setMessage("Thank you! Your review is submitted for approval.");
       setFullName("");
       setEmail("");
       setContent("");
       setRating("");
       setConsent(false);
+
+      if (onSubmitSuccess) onSubmitSuccess();
     }
 
     setLoading(false);
   };
 
   return (
-    <div className="w-full px-4 py-12 mx-auto">
+    <div className="w-full px-4 py-12">
       <div className="max-w-full p-8 mx-auto bg-white shadow-md sm:max-w-lg md:max-w-2xl lg:max-w-3xl xl:max-w-4xl dark:bg-gray-800 rounded-xl">
-        {/* Back Button */}
-        <div className="mb-6 text-left">
-          <Link
-            to="/testimonials"
-            className="inline-block px-4 py-2 text-sm font-medium bg-gray-100 rounded-lg text-acePurple hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
-          >
-            &larr; Back to Testimonials
-          </Link>
-        </div>
-
-        <h1 className="mb-6 text-2xl font-bold text-center text-acePurple">
-          Submit Testimonial
-        </h1>
+        <h2 className="mb-6 text-2xl font-bold text-center text-acePurple">
+          Submit a Review
+        </h2>
 
         {message && <p className="mb-4 text-center text-green-600">{message}</p>}
         {error && <p className="mb-4 text-center text-red-600">{error}</p>}
@@ -80,6 +71,7 @@ export default function TestimonialsSubmit() {
             required
             className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-acePurple dark:bg-gray-700 dark:text-gray-200"
           />
+
           <input
             type="email"
             placeholder="Email (optional)"
@@ -87,14 +79,16 @@ export default function TestimonialsSubmit() {
             onChange={(e) => setEmail(e.target.value)}
             className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-acePurple dark:bg-gray-700 dark:text-gray-200"
           />
+
           <textarea
-            placeholder="Your testimonial"
+            placeholder="Your review"
             value={content}
             onChange={(e) => setContent(e.target.value)}
             required
             className="w-full px-4 py-3 border rounded-lg resize-none focus:ring-2 focus:ring-acePurple dark:bg-gray-700 dark:text-gray-200"
             rows={5}
           />
+
           <input
             type="number"
             placeholder="Rating (1-5)"
@@ -105,7 +99,6 @@ export default function TestimonialsSubmit() {
             className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-acePurple dark:bg-gray-700 dark:text-gray-200"
           />
 
-          {/* Consent Checkbox */}
           <div className="flex items-center space-x-2">
             <input
               type="checkbox"
@@ -115,7 +108,7 @@ export default function TestimonialsSubmit() {
               className="w-4 h-4 border-gray-300 rounded text-acePurple focus:ring-2 focus:ring-acePurple"
             />
             <label htmlFor="consent" className="text-sm text-gray-700 dark:text-gray-200">
-              I consent to having my testimonial displayed publicly.
+              I consent to having my review displayed publicly.
             </label>
           </div>
 
@@ -124,7 +117,7 @@ export default function TestimonialsSubmit() {
             disabled={loading}
             className="w-full py-3 font-semibold text-white rounded-lg bg-acePurple hover:bg-aceGreen disabled:opacity-50"
           >
-            {loading ? "Submitting..." : "Submit"}
+            {loading ? "Submitting..." : "Submit Review"}
           </button>
         </form>
       </div>

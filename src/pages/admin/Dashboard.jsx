@@ -19,6 +19,7 @@ import ProgramsAdmin from "./ProgramsAdmin";
 import MenteesAdmin from "./MenteesAdmin";
 import TestimonialsAdmin from "./TestimonialsAdmin";
 import MentorshipAdmin from "./MentorshipAdmin";
+import AdminReviewsPage from "./AdminReviewsPage"; // <- NEW
 
 export default function DashboardAdmin() {
   const [activeModule, setActiveModule] = useState("mentorship");
@@ -27,6 +28,7 @@ export default function DashboardAdmin() {
     { id: "mentorship", label: "Mentorship", icon: <FaChalkboardTeacher /> },
     { id: "mentees", label: "Mentees", icon: <FaGraduationCap /> },
     { id: "programs", label: "Programs", icon: <FaClipboardList /> },
+    { id: "reviews", label: "Reviews", icon: <FaStar /> }, // NEW
     { id: "team", label: "Team", icon: <FaUsers /> },
     { id: "messages", label: "Messages", icon: <FaEnvelope /> },
     { id: "testimonials", label: "Testimonials", icon: <FaStar /> },
@@ -35,7 +37,7 @@ export default function DashboardAdmin() {
   ];
 
   return (
-    <div className="min-h-screen p-6 bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen p-6 bg-gray-50 dark:bg-gray-900 font-inter">
       {/* Icon Navigation */}
       <div className="flex flex-wrap justify-center gap-6 mb-6">
         {modules.map((mod) => (
@@ -54,14 +56,15 @@ export default function DashboardAdmin() {
 
       {/* Module Content */}
       <div className="mt-6">
-        {activeModule === "mentorship" && <MentorshipAdmin />}  {/* Accept/Decline Mentors */}
-        {activeModule === "mentees" && <MenteesAdmin />}        {/* Manage Mentees */}
-        {activeModule === "programs" && <ProgramsAdmin />}      {/* Manage Programs */}
-        {activeModule === "team" && <TeamAdmin />}              {/* Manage Team Members */}
-        {activeModule === "messages" && <ContactMessagesAdmin />} {/* Read & reply messages */}
-        {activeModule === "testimonials" && <TestimonialsAdmin />} {/* Manage Testimonials */}
-        {activeModule === "research" && <ResearchAdmin />}     {/* Upload, edit, delete research */}
-        {activeModule === "settings" && <GeneralSettings />}   {/* General Settings */}
+        {activeModule === "mentorship" && <MentorshipAdmin />}
+        {activeModule === "mentees" && <MenteesAdmin />}
+        {activeModule === "programs" && <ProgramsAdmin />}
+        {activeModule === "reviews" && <AdminReviewsPage />} {/* NEW */}
+        {activeModule === "team" && <TeamAdmin />}
+        {activeModule === "messages" && <ContactMessagesAdmin />}
+        {activeModule === "testimonials" && <TestimonialsAdmin />}
+        {activeModule === "research" && <ResearchAdmin />}
+        {activeModule === "settings" && <GeneralSettings />}
       </div>
     </div>
   );

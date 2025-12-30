@@ -2,6 +2,7 @@
 import { motion } from "framer-motion";
 import TeamPreview from "../sections/TeamPreview";
 import LogoScroller from "../sections/LogoScroller";
+import TestimonialsPreview from "../sections/TestimonialsPreview";
 
 export default function Home() {
   return (
@@ -38,6 +39,9 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* TESTIMONIALS PREVIEW (TRUST SIGNAL) */}
+      <TestimonialsPreview />
 
       {/* LOGO / IMAGE SCROLLER */}
       <section className="py-16 transition-colors duration-300 bg-aceBeige dark:bg-gray-900">

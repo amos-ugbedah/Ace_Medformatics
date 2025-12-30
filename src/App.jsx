@@ -1,3 +1,4 @@
+// src/App.jsx
 import { Routes, Route } from "react-router-dom";
 import { lazy, Suspense } from "react";
 
@@ -7,7 +8,9 @@ import PageLoader from "./components/loaders/PageLoader";
 import { ThemeProvider } from "./context/ThemeContext";
 import AdminRoute from "./components/AdminRoute";
 
-// Public Pages
+/* ============================
+   PUBLIC PAGES (LAZY LOADED)
+============================ */
 const Home = lazy(() => import("./pages/Home"));
 const About = lazy(() => import("./pages/About"));
 const Team = lazy(() => import("./pages/Team"));
@@ -18,18 +21,28 @@ const Collaboration = lazy(() => import("./pages/Collaboration"));
 const Programs = lazy(() => import("./pages/Programs"));
 const ProgramMaterials = lazy(() => import("./pages/ProgramMaterials"));
 const Contact = lazy(() => import("./pages/Contact"));
-const Testimonials = lazy(() => import("./pages/Testimonials"));
-const TestimonialsSubmit = lazy(() => import("./pages/testimonials/TestimonialsSubmit"));
 
-// Admin Pages
+/* Testimonials */
+const Testimonials = lazy(() => import("./pages/Testimonials"));
+const TestimonialsSubmit = lazy(() =>
+  import("./pages/testimonials/TestimonialsSubmit")
+);
+
+/* ============================
+   ADMIN PAGES
+============================ */
 const AdminLogin = lazy(() => import("./pages/admin/AdminLogin"));
 const AdminDashboard = lazy(() => import("./pages/admin/Dashboard"));
 const MentorshipAdmin = lazy(() => import("./pages/admin/MentorshipAdmin"));
 const MenteesAdmin = lazy(() => import("./pages/admin/MenteesAdmin"));
 const ProgramsAdmin = lazy(() => import("./pages/admin/ProgramsAdmin"));
 const TeamAdmin = lazy(() => import("./pages/admin/TeamAdmin"));
-const ContactMessagesAdmin = lazy(() => import("./pages/admin/ContactMessagesAdmin"));
-const TestimonialsAdmin = lazy(() => import("./pages/admin/TestimonialsAdmin"));
+const ContactMessagesAdmin = lazy(() =>
+  import("./pages/admin/ContactMessagesAdmin")
+);
+const TestimonialsAdmin = lazy(() =>
+  import("./pages/admin/TestimonialsAdmin")
+);
 
 export default function App() {
   return (
@@ -40,7 +53,9 @@ export default function App() {
         <main className="flex-grow">
           <Suspense fallback={<PageLoader />}>
             <Routes>
-              {/* Public Routes */}
+              {/* =====================
+                  PUBLIC ROUTES
+              ====================== */}
               <Route path="/" element={<Home />} />
               <Route path="/about" element={<About />} />
               <Route path="/team" element={<Team />} />
@@ -49,15 +64,26 @@ export default function App() {
               <Route path="/mentorship/apply" element={<MentorshipApply />} />
               <Route path="/collaboration" element={<Collaboration />} />
               <Route path="/programs" element={<Programs />} />
-              <Route path="/programs/:slug/materials" element={<ProgramMaterials />} />
+              <Route
+                path="/programs/:slug/materials"
+                element={<ProgramMaterials />}
+              />
               <Route path="/contact" element={<Contact />} />
 
-              {/* Testimonials */}
+              {/* =====================
+                  TESTIMONIALS ROUTES
+              ====================== */}
               <Route path="/testimonials" element={<Testimonials />} />
-              <Route path="/testimonials/submit" element={<TestimonialsSubmit />} />
+              <Route
+                path="/testimonials/submit"
+                element={<TestimonialsSubmit />}
+              />
 
-              {/* Admin Routes */}
+              {/* =====================
+                  ADMIN ROUTES
+              ====================== */}
               <Route path="/admin/login" element={<AdminLogin />} />
+
               <Route
                 path="/admin/dashboard/*"
                 element={
@@ -70,8 +96,14 @@ export default function App() {
                 <Route path="mentees" element={<MenteesAdmin />} />
                 <Route path="programs" element={<ProgramsAdmin />} />
                 <Route path="team" element={<TeamAdmin />} />
-                <Route path="contact-messages" element={<ContactMessagesAdmin />} />
-                <Route path="testimonials" element={<TestimonialsAdmin />} />
+                <Route
+                  path="contact-messages"
+                  element={<ContactMessagesAdmin />}
+                />
+                <Route
+                  path="testimonials"
+                  element={<TestimonialsAdmin />}
+                />
               </Route>
             </Routes>
           </Suspense>
