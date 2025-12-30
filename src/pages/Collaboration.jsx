@@ -7,22 +7,23 @@ export default function Collaboration() {
 
   if (loading)
     return (
-      <p className="text-center py-20 text-gray-500 dark:text-gray-400">
-        Loading collaborations...
+      <p className="py-20 text-center text-gray-500 dark:text-gray-400">
+        Loading collaborations…
       </p>
     );
+
   if (error)
     return (
-      <p className="text-center py-20 text-red-600">
+      <p className="py-20 text-center text-red-600">
         Failed to load collaborations.
       </p>
     );
 
   return (
-    <section className="bg-aceLight dark:bg-gray-900 py-16 px-4 font-sans transition-colors duration-300">
-      <div className="max-w-7xl mx-auto text-center">
+    <section className="px-4 py-20 transition-colors bg-aceLight dark:bg-gray-900">
+      <div className="max-w-6xl mx-auto text-center">
         <motion.h1
-          className="text-4xl md:text-5xl font-bold text-acePurple dark:text-aceGreen mb-8"
+          className="mb-6 text-4xl font-bold md:text-5xl text-acePurple dark:text-aceGreen"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -32,39 +33,40 @@ export default function Collaboration() {
         </motion.h1>
 
         <motion.p
-          className="text-gray-700 dark:text-gray-200 mb-12 max-w-2xl mx-auto"
+          className="max-w-2xl mx-auto leading-relaxed text-gray-700 dark:text-gray-200 mb-14"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ delay: 0.2, duration: 0.8 }}
         >
           Strategic partnerships strengthening capacity building, research,
-          innovation, and professional recognition in Health Information Management.
+          innovation, and professional recognition in Health Information
+          Management.
         </motion.p>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3">
           {collaborations.map((partner, idx) => (
             <motion.div
               key={partner.id}
-              className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 flex flex-col h-full hover:shadow-2xl transition-shadow duration-300 transition-colors"
+              className="flex flex-col p-6 transition-all bg-white shadow-lg dark:bg-gray-800 rounded-xl hover:shadow-2xl"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
+              viewport={{ once: true }}
               transition={{ delay: idx * 0.15, duration: 0.6 }}
             >
               {partner.logo_url && (
                 <img
                   src={partner.logo_url}
                   alt={partner.name}
-                  className="h-16 mx-auto mb-4 object-contain"
+                  className="object-contain h-16 mx-auto mb-5"
                 />
               )}
 
-              <h3 className="text-xl font-semibold text-acePurple dark:text-aceGreen mb-3">
+              <h3 className="mb-3 text-lg font-semibold text-acePurple dark:text-aceGreen">
                 {partner.name}
               </h3>
 
-              <p className="text-gray-600 dark:text-gray-200">
+              <p className="leading-relaxed text-gray-600 dark:text-gray-200">
                 {partner.description}
               </p>
             </motion.div>

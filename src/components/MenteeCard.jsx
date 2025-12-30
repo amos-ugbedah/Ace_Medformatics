@@ -1,25 +1,39 @@
+// src/components/MenteeCard.jsx
 import { motion } from "framer-motion";
 
 export default function MenteeCard({ mentee }) {
   return (
     <motion.div
-      className="bg-white rounded-xl shadow-lg p-6 flex flex-col items-center text-center hover:shadow-2xl transition-shadow duration-300"
+      className="flex flex-col items-center p-6 text-center transition-shadow duration-300 bg-white shadow-lg dark:bg-gray-800 rounded-xl hover:shadow-2xl font-inter"
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.3 }}
       whileHover={{ scale: 1.03 }}
     >
-      <div className="w-32 h-32 rounded-full overflow-hidden mb-4 border-4 border-acePurple bg-lime-400">
+      {/* Profile Image */}
+      <div className="w-32 h-32 mb-4 overflow-hidden border-4 rounded-full border-acePurple dark:border-aceGreen bg-lime-400">
         <img
           src={mentee.profile_image_url}
           alt={mentee.full_name}
-          className="w-full h-full object-cover"
+          className="object-cover w-full h-full"
         />
       </div>
-      <h3 className="text-xl font-semibold text-acePurple">{mentee.full_name}</h3>
-      <p className="text-gray-600 mt-1">{mentee.field_of_interest}</p>
+
+      {/* Name */}
+      <h3 className="text-xl font-semibold text-acePurple dark:text-aceGreen">
+        {mentee.full_name}
+      </h3>
+
+      {/* Field of Interest */}
+      <p className="mt-1 text-gray-600 dark:text-gray-300">
+        {mentee.field_of_interest}
+      </p>
+
+      {/* Bio */}
       {mentee.bio && (
-        <p className="text-gray-700 mt-2 line-clamp-3">{mentee.bio}</p>
+        <p className="mt-2 text-gray-700 dark:text-gray-200 line-clamp-3">
+          {mentee.bio}
+        </p>
       )}
     </motion.div>
   );

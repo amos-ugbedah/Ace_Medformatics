@@ -1,3 +1,4 @@
+// src/components/TeamPreview.jsx
 import { motion } from "framer-motion";
 import { useTeamMembers } from "../hooks/useTeamMembers";
 import { Link } from "react-router-dom";
@@ -9,10 +10,11 @@ export default function TeamPreview() {
   if (error) return null;
 
   return (
-    <section className="bg-aceLight dark:bg-gray-900 py-16 transition-colors duration-300">
-      <div className="max-w-7xl mx-auto px-4">
+    <section className="py-16 transition-colors duration-300 bg-aceLight dark:bg-gray-900 font-inter">
+      <div className="px-4 mx-auto max-w-7xl">
+        {/* Header */}
         <motion.h2
-          className="text-3xl md:text-4xl font-bold text-center text-acePurple dark:text-aceGreen mb-12 transition-colors duration-300"
+          className="mb-12 text-3xl font-bold text-center transition-colors duration-300 md:text-4xl text-acePurple dark:text-aceGreen"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -20,39 +22,41 @@ export default function TeamPreview() {
           Meet Our Team
         </motion.h2>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        {/* Team Grid */}
+        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
           {team.map((member, index) => (
             <motion.div
               key={member.id}
-              className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 text-center transition-colors duration-300"
+              className="p-6 text-center transition-colors duration-300 bg-white shadow-lg dark:bg-gray-800 rounded-2xl"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.1 }}
               whileHover={{ scale: 1.04 }}
             >
-              <div className="w-28 h-28 mx-auto rounded-full overflow-hidden border-4 border-acePurple mb-5">
+              <div className="mx-auto mb-5 overflow-hidden border-4 rounded-full w-28 h-28 border-acePurple">
                 <img
                   src={member.profile_image_url}
                   alt={member.full_name}
-                  className="w-full h-full object-cover"
+                  className="object-cover w-full h-full"
                 />
               </div>
 
-              <h3 className="font-semibold text-lg text-aceDark dark:text-gray-100 transition-colors duration-300">
+              <h3 className="text-lg font-semibold transition-colors duration-300 text-aceDark dark:text-gray-100">
                 {member.full_name}
               </h3>
-              <p className="text-gray-600 dark:text-gray-300 transition-colors duration-300">
+              <p className="text-gray-600 transition-colors duration-300 dark:text-gray-300">
                 {member.role}
               </p>
             </motion.div>
           ))}
         </div>
 
-        <div className="text-center mt-12">
+        {/* View Full Team Button */}
+        <div className="mt-12 text-center">
           <Link
             to="/team"
-            className="inline-block bg-acePurple dark:bg-aceGreen text-white px-6 py-3 rounded-full hover:bg-opacity-90 transition-colors duration-300"
+            className="inline-block px-6 py-3 text-white transition-colors duration-300 rounded-full bg-acePurple dark:bg-aceGreen hover:bg-opacity-90 font-inter"
           >
             View Full Team
           </Link>

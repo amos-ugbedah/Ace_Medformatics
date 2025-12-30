@@ -22,8 +22,6 @@ export default function Research() {
     fetchResearch();
   }, []);
 
-  // No need for a filtering effect; filter in render
-
   const years = [...new Set(research.map((r) => r.publication_year))].sort(
     (a, b) => b - a
   );
@@ -43,38 +41,38 @@ export default function Research() {
   }
 
   return (
-    <section className="bg-aceLight dark:bg-gray-900 min-h-screen py-16 px-4 transition-colors duration-300 font-sans">
-      <div className="max-w-7xl mx-auto">
+    <section className="min-h-screen px-4 py-16 transition-colors duration-300 bg-aceLight dark:bg-gray-900 font-inter">
+      <div className="mx-auto max-w-7xl">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-14"
+          className="mb-16 text-center"
         >
-          <h1 className="text-4xl md:text-5xl font-bold text-acePurple dark:text-aceGreen">
+          <h1 className="text-4xl font-bold md:text-5xl text-acePurple dark:text-aceGreen">
             Research & Publications
           </h1>
-          <p className="mt-4 max-w-2xl mx-auto text-gray-600 dark:text-gray-300">
+          <p className="max-w-2xl mx-auto mt-4 text-lg leading-relaxed text-gray-700 dark:text-gray-300">
             Advancing Health Information Management through evidence-based
             research, innovation, and policy impact.
           </p>
         </motion.div>
 
         {/* Filters */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-4 md:p-6 mb-12 flex flex-col md:flex-row gap-4 items-center justify-between transition-colors duration-300">
+        <div className="flex flex-col items-center justify-between gap-4 p-4 mb-12 transition-colors duration-300 bg-white shadow-md dark:bg-gray-800 rounded-xl md:p-6 md:flex-row">
           <input
             type="text"
             placeholder="Search by title or author"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full md:w-1/2 border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 focus:ring-2 focus:ring-acePurple dark:focus:ring-aceGreen outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-200 transition-colors duration-300"
+            className="w-full px-4 py-2 text-gray-900 transition-colors duration-300 border border-gray-300 rounded-lg outline-none md:w-1/2 dark:border-gray-600 focus:ring-2 focus:ring-acePurple dark:focus:ring-aceGreen bg-gray-50 dark:bg-gray-700 dark:text-gray-200"
           />
 
           <select
             value={year}
             onChange={(e) => setYear(e.target.value)}
-            className="w-full md:w-1/4 border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 focus:ring-2 focus:ring-aceGreen dark:focus:ring-acePurple outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-200 transition-colors duration-300"
+            className="w-full px-4 py-2 text-gray-900 transition-colors duration-300 border border-gray-300 rounded-lg outline-none md:w-1/4 dark:border-gray-600 focus:ring-2 focus:ring-aceGreen dark:focus:ring-acePurple bg-gray-50 dark:bg-gray-700 dark:text-gray-200"
           >
             <option value="">All Years</option>
             {years.map((y) => (
@@ -87,13 +85,13 @@ export default function Research() {
 
         {/* Empty State */}
         {filtered.length === 0 && (
-          <p className="text-center text-gray-500 dark:text-gray-400">
+          <p className="text-lg text-center text-gray-500 dark:text-gray-400">
             No research publications found.
           </p>
         )}
 
         {/* Research Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
           {filtered.map((item) => (
             <motion.div
               key={item.id}
@@ -101,18 +99,18 @@ export default function Research() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               whileHover={{ scale: 1.02 }}
-              className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 flex flex-col justify-between border-t-4 border-acePurple dark:border-aceGreen transition-colors duration-300"
+              className="flex flex-col justify-between p-6 transition-colors duration-300 bg-white border-t-4 shadow-lg dark:bg-gray-800 rounded-xl border-acePurple dark:border-aceGreen"
             >
               <div>
                 <h3 className="text-xl font-semibold text-acePurple dark:text-aceGreen">
                   {item.title}
                 </h3>
 
-                <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
                   {item.publication_year} • {item.authors}
                 </p>
 
-                <p className="text-gray-700 dark:text-gray-200 mt-4 line-clamp-4">
+                <p className="mt-4 text-base leading-relaxed text-gray-700 dark:text-gray-200 line-clamp-4">
                   {item.abstract}
                 </p>
               </div>
@@ -121,7 +119,7 @@ export default function Research() {
                 <a
                   href={item.document_url}
                   download
-                  className="mt-6 inline-block w-max bg-aceGreen text-aceDark font-semibold px-5 py-2 rounded-lg hover:bg-acePurple hover:text-white transition-colors duration-300"
+                  className="inline-block px-5 py-2 mt-6 font-semibold transition-colors duration-300 rounded-lg w-max bg-aceGreen text-aceDark hover:bg-acePurple hover:text-white"
                 >
                   Download Research
                 </a>

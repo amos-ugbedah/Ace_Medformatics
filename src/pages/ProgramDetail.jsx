@@ -9,7 +9,6 @@ const programMaterials = {
   "peer-to-peer-training-sessions": [
     { title: "Training Guide", link: "/downloads/training-guide.pdf" },
   ],
-  // Add other programs here
 };
 
 export default function ProgramDetail() {
@@ -18,47 +17,50 @@ export default function ProgramDetail() {
   const materials = programMaterials[programId] || [];
 
   return (
-    <section className="bg-aceLight py-16 px-4">
+    <section className="px-4 py-16 transition-colors bg-aceLight">
       <div className="max-w-5xl mx-auto text-center">
         {/* Back Button */}
         <button
           onClick={() => navigate("/programs")}
-          className="mb-8 inline-block bg-gray-200 text-gray-800 py-2 px-4 rounded hover:bg-gray-300 transition"
+          className="inline-block px-4 py-2 mb-8 text-sm font-medium text-gray-800 transition bg-gray-200 rounded hover:bg-gray-300"
         >
           ← Back to Programs
         </button>
 
         {/* Program Title */}
-        <h1 className="text-4xl font-bold text-acePurple mb-8">
+        <h1 className="mb-6 text-3xl font-semibold tracking-tight md:text-4xl text-acePurple">
           {programId.replace(/-/g, " ")}
         </h1>
 
         {/* Description */}
-        <p className="text-gray-700 mb-12">
+        <p className="max-w-3xl mx-auto mb-12 leading-relaxed text-gray-700">
           Here are the materials available for this program. Click the buttons below to download.
         </p>
 
         {/* Materials Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
           {materials.map((item, idx) => (
             <div
               key={idx}
-              className="bg-white p-6 rounded-xl shadow-md flex flex-col items-center"
+              className="flex flex-col items-center p-6 transition-shadow bg-white shadow-md rounded-xl hover:shadow-lg"
             >
-              <h3 className="text-lg font-semibold text-acePurple">{item.title}</h3>
+              <h3 className="text-lg font-semibold text-center text-acePurple">
+                {item.title}
+              </h3>
+
               <a
                 href={item.link}
                 download
-                className="mt-4 inline-block bg-aceGreen text-white py-2 px-4 rounded-md hover:bg-acePurple transition"
+                className="inline-block px-4 py-2 mt-4 text-sm font-medium text-white transition rounded-md bg-aceGreen hover:bg-acePurple"
               >
                 Download
               </a>
             </div>
           ))}
 
-          {/* Display a message if no materials are available */}
+          {/* Empty State */}
           {materials.length === 0 && (
-            <p className="text-gray-600 col-span-full mt-4">
+            <p className="mt-4 text-gray-600 col-span-full">
               No materials are currently available for this program.
             </p>
           )}

@@ -14,27 +14,30 @@ export default function Lightbox({ images, selectedIndex, setSelectedIndex }) {
   return (
     <AnimatePresence>
       <motion.div
-        className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center px-4"
+        className="fixed inset-0 z-50 flex items-center justify-center px-4 bg-black/80 font-inter"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
       >
+        {/* Close Button */}
         <button
           onClick={closeModal}
-          className="absolute top-6 right-6 text-white text-3xl"
+          className="absolute text-3xl font-bold text-white top-6 right-6 md:text-4xl"
           aria-label="Close"
         >
           &times;
         </button>
 
+        {/* Previous Button */}
         <button
           onClick={showPrev}
-          className="absolute left-4 md:left-10 text-white text-4xl"
+          className="absolute text-4xl font-bold text-white left-4 md:left-10 md:text-5xl"
           aria-label="Previous Image"
         >
           ‹
         </button>
 
+        {/* Image */}
         <motion.img
           src={images[selectedIndex].url}
           alt={images[selectedIndex].alt || `Image ${selectedIndex + 1}`}
@@ -43,9 +46,10 @@ export default function Lightbox({ images, selectedIndex, setSelectedIndex }) {
           animate={{ scale: 1 }}
         />
 
+        {/* Next Button */}
         <button
           onClick={showNext}
-          className="absolute right-4 md:right-10 text-white text-4xl"
+          className="absolute text-4xl font-bold text-white right-4 md:right-10 md:text-5xl"
           aria-label="Next Image"
         >
           ›
@@ -54,3 +58,4 @@ export default function Lightbox({ images, selectedIndex, setSelectedIndex }) {
     </AnimatePresence>
   );
 }
+
