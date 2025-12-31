@@ -21,6 +21,7 @@ const Collaboration = lazy(() => import("./pages/Collaboration"));
 const Programs = lazy(() => import("./pages/Programs"));
 const ProgramMaterials = lazy(() => import("./pages/ProgramMaterials"));
 const Contact = lazy(() => import("./pages/Contact"));
+const Media = lazy(() => import("./pages/Media")); // ✅ NEW
 
 /* Testimonials */
 const Testimonials = lazy(() => import("./pages/Testimonials"));
@@ -68,6 +69,7 @@ export default function App() {
                 path="/programs/:slug/materials"
                 element={<ProgramMaterials />}
               />
+              <Route path="/media" element={<Media />} /> {/* ✅ NEW */}
               <Route path="/contact" element={<Contact />} />
 
               {/* =====================

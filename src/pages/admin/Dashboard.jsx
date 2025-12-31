@@ -1,15 +1,15 @@
-// src/pages/admin/DashboardAdmin.jsx
 import { useState } from "react";
-import { 
-  FaUsers, 
-  FaEnvelope, 
-  FaFlask, 
-  FaCog, 
-  FaChalkboardTeacher, 
-  FaGraduationCap, 
-  FaClipboardList, 
-  FaStar 
-} from "react-icons/fa"; // FontAwesome icons
+import {
+  FaUsers,
+  FaEnvelope,
+  FaFlask,
+  FaCog,
+  FaChalkboardTeacher,
+  FaGraduationCap,
+  FaClipboardList,
+  FaStar,
+  FaNewspaper,
+} from "react-icons/fa";
 
 import TeamAdmin from "./TeamAdmin";
 import ContactMessagesAdmin from "./ContactMessagesAdmin";
@@ -19,7 +19,8 @@ import ProgramsAdmin from "./ProgramsAdmin";
 import MenteesAdmin from "./MenteesAdmin";
 import TestimonialsAdmin from "./TestimonialsAdmin";
 import MentorshipAdmin from "./MentorshipAdmin";
-import AdminReviewsPage from "./AdminReviewsPage"; // <- NEW
+import AdminReviewsPage from "./AdminReviewsPage";
+import AdminMediaPage from "./AdminMediaPage"; // ✅ NEW
 
 export default function DashboardAdmin() {
   const [activeModule, setActiveModule] = useState("mentorship");
@@ -28,7 +29,11 @@ export default function DashboardAdmin() {
     { id: "mentorship", label: "Mentorship", icon: <FaChalkboardTeacher /> },
     { id: "mentees", label: "Mentees", icon: <FaGraduationCap /> },
     { id: "programs", label: "Programs", icon: <FaClipboardList /> },
-    { id: "reviews", label: "Reviews", icon: <FaStar /> }, // NEW
+    { id: "reviews", label: "Reviews", icon: <FaStar /> },
+
+    // 🔥 MEDIA MODULE
+    { id: "media", label: "Media & Press", icon: <FaNewspaper /> },
+
     { id: "team", label: "Team", icon: <FaUsers /> },
     { id: "messages", label: "Messages", icon: <FaEnvelope /> },
     { id: "testimonials", label: "Testimonials", icon: <FaStar /> },
@@ -38,28 +43,35 @@ export default function DashboardAdmin() {
 
   return (
     <div className="min-h-screen p-6 bg-gray-50 dark:bg-gray-900 font-inter">
-      {/* Icon Navigation */}
-      <div className="flex flex-wrap justify-center gap-6 mb-6">
+      {/* ICON NAVIGATION */}
+      <div className="flex flex-wrap justify-center gap-6 mb-8">
         {modules.map((mod) => (
           <button
             key={mod.id}
             onClick={() => setActiveModule(mod.id)}
-            className={`flex flex-col items-center justify-center p-3 rounded-lg transition
-              ${activeModule === mod.id ? "bg-acePurple text-white" : "bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300"}
+            className={`flex flex-col items-center justify-center w-28 h-24 rounded-xl transition-all
+              ${
+                activeModule === mod.id
+                  ? "bg-acePurple text-white shadow-lg"
+                  : "bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300"
+              }
               hover:bg-acePurple hover:text-white`}
           >
-            <div className="mb-1 text-2xl">{mod.icon}</div>
-            <span className="text-sm">{mod.label}</span>
+            <div className="mb-2 text-2xl">{mod.icon}</div>
+            <span className="text-sm font-medium text-center">
+              {mod.label}
+            </span>
           </button>
         ))}
       </div>
 
-      {/* Module Content */}
+      {/* MODULE CONTENT */}
       <div className="mt-6">
         {activeModule === "mentorship" && <MentorshipAdmin />}
         {activeModule === "mentees" && <MenteesAdmin />}
         {activeModule === "programs" && <ProgramsAdmin />}
-        {activeModule === "reviews" && <AdminReviewsPage />} {/* NEW */}
+        {activeModule === "reviews" && <AdminReviewsPage />}
+        {activeModule === "media" && <AdminMediaPage />} {/* ✅ NEW */}
         {activeModule === "team" && <TeamAdmin />}
         {activeModule === "messages" && <ContactMessagesAdmin />}
         {activeModule === "testimonials" && <TestimonialsAdmin />}
