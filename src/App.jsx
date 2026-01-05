@@ -1,4 +1,4 @@
-// src/App.jsx
+// src/App.jsx - CORRECTED
 import { Routes, Route } from "react-router-dom";
 import { lazy, Suspense } from "react";
 
@@ -21,7 +21,7 @@ const Collaboration = lazy(() => import("./pages/Collaboration"));
 const Programs = lazy(() => import("./pages/Programs"));
 const ProgramMaterials = lazy(() => import("./pages/ProgramMaterials"));
 const Contact = lazy(() => import("./pages/Contact"));
-const Media = lazy(() => import("./pages/Media")); // ✅ NEW
+const Media = lazy(() => import("./pages/Media"));
 
 /* Testimonials */
 const Testimonials = lazy(() => import("./pages/Testimonials"));
@@ -30,20 +30,10 @@ const TestimonialsSubmit = lazy(() =>
 );
 
 /* ============================
-   ADMIN PAGES
+   ADMIN PAGES - FIXED IMPORTS
 ============================ */
 const AdminLogin = lazy(() => import("./pages/admin/AdminLogin"));
-const AdminDashboard = lazy(() => import("./pages/admin/Dashboard"));
-const MentorshipAdmin = lazy(() => import("./pages/admin/MentorshipAdmin"));
-const MenteesAdmin = lazy(() => import("./pages/admin/MenteesAdmin"));
-const ProgramsAdmin = lazy(() => import("./pages/admin/ProgramsAdmin"));
-const TeamAdmin = lazy(() => import("./pages/admin/TeamAdmin"));
-const ContactMessagesAdmin = lazy(() =>
-  import("./pages/admin/ContactMessagesAdmin")
-);
-const TestimonialsAdmin = lazy(() =>
-  import("./pages/admin/TestimonialsAdmin")
-);
+const Dashboard = lazy(() => import("./pages/admin/Dashboard")); // ✅ Correct: Dashboard.jsx
 
 export default function App() {
   return (
@@ -69,7 +59,7 @@ export default function App() {
                 path="/programs/:slug/materials"
                 element={<ProgramMaterials />}
               />
-              <Route path="/media" element={<Media />} /> {/* ✅ NEW */}
+              <Route path="/media" element={<Media />} />
               <Route path="/contact" element={<Contact />} />
 
               {/* =====================
@@ -82,31 +72,63 @@ export default function App() {
               />
 
               {/* =====================
-                  ADMIN ROUTES
+                  ADMIN ROUTES - SIMPLE
               ====================== */}
               <Route path="/admin/login" element={<AdminLogin />} />
-
-              <Route
-                path="/admin/dashboard/*"
+              
+              {/* ✅ CORRECT: Simple /admin/dashboard route */}
+              <Route 
+                path="/admin/dashboard" 
                 element={
                   <AdminRoute>
-                    <AdminDashboard />
+                    <Dashboard />
                   </AdminRoute>
-                }
-              >
-                <Route path="mentorship" element={<MentorshipAdmin />} />
-                <Route path="mentees" element={<MenteesAdmin />} />
-                <Route path="programs" element={<ProgramsAdmin />} />
-                <Route path="team" element={<TeamAdmin />} />
-                <Route
-                  path="contact-messages"
-                  element={<ContactMessagesAdmin />}
-                />
-                <Route
-                  path="testimonials"
-                  element={<TestimonialsAdmin />}
-                />
-              </Route>
+                } 
+              />
+              
+              {/* Catch-all for admin 404 */}
+              <Route path="/admin/*" element={
+                <div className="flex items-center justify-center min-h-screen p-4">
+                  <div className="max-w-md text-center">
+                    <h1 className="mb-4 text-6xl font-bold text-gray-800 dark:text-white">404</h1>
+                    <p className="mb-6 text-xl text-gray-600 dark:text-gray-300">
+                      Admin page not found
+                    </p>
+                    <div className="space-y-3">
+                      <a 
+                        href="/admin/dashboard" 
+                        className="block w-full px-6 py-3 text-white transition-colors bg-black rounded-lg hover:bg-gray-800"
+                      >
+                        Go to Admin Dashboard
+                      </a>
+                      <a 
+                        href="/admin/login" 
+                        className="block w-full px-6 py-3 text-gray-700 transition-colors border border-gray-300 rounded-lg hover:bg-gray-50"
+                      >
+                        Go to Admin Login
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              } />
+              
+              {/* Global 404 */}
+              <Route path="*" element={
+                <div className="flex items-center justify-center min-h-screen p-4">
+                  <div className="max-w-md text-center">
+                    <h1 className="mb-4 text-6xl font-bold text-gray-800 dark:text-white">404</h1>
+                    <p className="mb-6 text-xl text-gray-600 dark:text-gray-300">
+                      Page not found
+                    </p>
+                    <a 
+                      href="/" 
+                      className="inline-block px-6 py-3 text-white transition-colors bg-black rounded-lg hover:bg-gray-800"
+                    >
+                      Return to Homepage
+                    </a>
+                  </div>
+                </div>
+              } />
             </Routes>
           </Suspense>
         </main>

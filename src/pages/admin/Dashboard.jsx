@@ -1,3 +1,4 @@
+// src/pages/admin/Dashboard.jsx - UPDATED
 import { useState } from "react";
 import {
   FaUsers,
@@ -20,9 +21,9 @@ import MenteesAdmin from "./MenteesAdmin";
 import TestimonialsAdmin from "./TestimonialsAdmin";
 import MentorshipAdmin from "./MentorshipAdmin";
 import AdminReviewsPage from "./AdminReviewsPage";
-import AdminMediaPage from "./AdminMediaPage"; // ✅ NEW
+import AdminMediaPage from "./AdminMediaPage";
 
-export default function DashboardAdmin() {
+export default function Dashboard() { // ✅ Changed from DashboardAdmin to Dashboard
   const [activeModule, setActiveModule] = useState("mentorship");
 
   const modules = [
@@ -30,10 +31,7 @@ export default function DashboardAdmin() {
     { id: "mentees", label: "Mentees", icon: <FaGraduationCap /> },
     { id: "programs", label: "Programs", icon: <FaClipboardList /> },
     { id: "reviews", label: "Reviews", icon: <FaStar /> },
-
-    // 🔥 MEDIA MODULE
     { id: "media", label: "Media & Press", icon: <FaNewspaper /> },
-
     { id: "team", label: "Team", icon: <FaUsers /> },
     { id: "messages", label: "Messages", icon: <FaEnvelope /> },
     { id: "testimonials", label: "Testimonials", icon: <FaStar /> },
@@ -71,7 +69,7 @@ export default function DashboardAdmin() {
         {activeModule === "mentees" && <MenteesAdmin />}
         {activeModule === "programs" && <ProgramsAdmin />}
         {activeModule === "reviews" && <AdminReviewsPage />}
-        {activeModule === "media" && <AdminMediaPage />} {/* ✅ NEW */}
+        {activeModule === "media" && <AdminMediaPage />}
         {activeModule === "team" && <TeamAdmin />}
         {activeModule === "messages" && <ContactMessagesAdmin />}
         {activeModule === "testimonials" && <TestimonialsAdmin />}
