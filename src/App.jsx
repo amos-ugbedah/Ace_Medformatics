@@ -1,5 +1,5 @@
-// Updated App.jsx
-import { Routes, Route, Navigate } from "react-router-dom";
+// src/App.jsx
+import { Routes, Route } from "react-router-dom";
 import { lazy, Suspense } from "react";
 
 import Navbar from "./components/Navbar";
@@ -21,7 +21,7 @@ const Collaboration = lazy(() => import("./pages/Collaboration"));
 const Programs = lazy(() => import("./pages/Programs"));
 const ProgramMaterials = lazy(() => import("./pages/ProgramMaterials"));
 const Contact = lazy(() => import("./pages/Contact"));
-const Media = lazy(() => import("./pages/Media"));
+const Media = lazy(() => import("./pages/Media")); // ✅ NEW
 
 /* Testimonials */
 const Testimonials = lazy(() => import("./pages/Testimonials"));
@@ -33,7 +33,7 @@ const TestimonialsSubmit = lazy(() =>
    ADMIN PAGES
 ============================ */
 const AdminLogin = lazy(() => import("./pages/admin/AdminLogin"));
-const DashboardAdmin = lazy(() => import("./pages/admin/DashboardAdmin"));
+const AdminDashboard = lazy(() => import("./pages/admin/Dashboard"));
 const MentorshipAdmin = lazy(() => import("./pages/admin/MentorshipAdmin"));
 const MenteesAdmin = lazy(() => import("./pages/admin/MenteesAdmin"));
 const ProgramsAdmin = lazy(() => import("./pages/admin/ProgramsAdmin"));
@@ -44,10 +44,6 @@ const ContactMessagesAdmin = lazy(() =>
 const TestimonialsAdmin = lazy(() =>
   import("./pages/admin/TestimonialsAdmin")
 );
-const AdminMediaPage = lazy(() => import("./pages/admin/AdminMediaPage"));
-const ResearchAdmin = lazy(() => import("./pages/admin/ResearchAdmin"));
-const GeneralSettings = lazy(() => import("./pages/admin/GeneralSettings"));
-const AdminReviewsPage = lazy(() => import("./pages/admin/AdminReviewsPage"));
 
 export default function App() {
   return (
@@ -73,7 +69,7 @@ export default function App() {
                 path="/programs/:slug/materials"
                 element={<ProgramMaterials />}
               />
-              <Route path="/media" element={<Media />} />
+              <Route path="/media" element={<Media />} /> {/* ✅ NEW */}
               <Route path="/contact" element={<Contact />} />
 
               {/* =====================
@@ -89,32 +85,27 @@ export default function App() {
                   ADMIN ROUTES
               ====================== */}
               <Route path="/admin/login" element={<AdminLogin />} />
-              
-              {/* Redirect /admin/dashboard to /admin/dashboard/mentorship */}
-              <Route path="/admin/dashboard" element={
-                <Navigate to="/admin/dashboard/mentorship" replace />
-              } />
-              
-              {/* Nested admin dashboard routes */}
+
               <Route
                 path="/admin/dashboard/*"
                 element={
                   <AdminRoute>
-                    <DashboardAdmin />
+                    <AdminDashboard />
                   </AdminRoute>
                 }
               >
-                <Route index element={<Navigate to="mentorship" replace />} />
                 <Route path="mentorship" element={<MentorshipAdmin />} />
                 <Route path="mentees" element={<MenteesAdmin />} />
                 <Route path="programs" element={<ProgramsAdmin />} />
-                <Route path="media" element={<AdminMediaPage />} />
                 <Route path="team" element={<TeamAdmin />} />
-                <Route path="contact-messages" element={<ContactMessagesAdmin />} />
-                <Route path="testimonials" element={<TestimonialsAdmin />} />
-                <Route path="research" element={<ResearchAdmin />} />
-                <Route path="reviews" element={<AdminReviewsPage />} />
-                <Route path="settings" element={<GeneralSettings />} />
+                <Route
+                  path="contact-messages"
+                  element={<ContactMessagesAdmin />}
+                />
+                <Route
+                  path="testimonials"
+                  element={<TestimonialsAdmin />}
+                />
               </Route>
             </Routes>
           </Suspense>
