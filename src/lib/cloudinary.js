@@ -1,67 +1,46 @@
-// src/lib/cloudinary.js
 export async function uploadToCloudinary(file) {
   try {
-    console.log("📤 Starting Cloudinary upload...", file.name);
+    console.log("📤 Starting Cloudinary upload...");
     
-    const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
-    const uploadPreset = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET;
+    // Use your actual values - they should load from .env
+    const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME || "dycvjrjys";
+    const uploadPreset = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET || "AC_MEDFORMATICSMEDIA";
+    
+    console.log("🌤️ Using Cloudinary:", { cloudName, uploadPreset });
     
     if (!cloudName || !uploadPreset) {
-      throw new Error("Cloudinary configuration is missing. Check your environment variables.");
+      throw new Error("Cloudinary config missing! Check .env file");
     }
     
     const formData = new FormData();
     formData.append("file", file);
     formData.append("upload_preset", uploadPreset);
-    formData.append("cloud_name", cloudName);
-    formData.append("folder", "acemedformatics/media");
+    formData.append("folder", "acemedformatics/media"); // Optional: organize
     
-    // Optional: Add transformations
-    formData.append("transformation", "c_fill,g_auto,w_1200,h_630");
+    const apiUrl = `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`;
+    console.log("🌐 Calling:", apiUrl);
     
-    const response = await fetch(
-      `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
-      {
-        method: "POST",
-        body: formData,
-      }
-    );
+    const res = await fetch(apiUrl, {
+      method: "POST",
+      body: formData,
+    });
     
-    console.log("📡 Cloudinary response status:", response.status);
+    console.log("📡 Response status:", res.status, res.statusText);
     
-    if (!response.ok) {
-      let errorMessage = `HTTP ${response.status}`;
-      try {
-        const errorData = await response.json();
-        errorMessage = errorData.error?.message || JSON.stringify(errorData);
-      } catch {
-        const text = await response.text();
-        errorMessage = text || errorMessage;
-      }
-      throw new Error(`Cloudinary upload failed: ${errorMessage}`);
+    if (!res.ok) {
+      let errorText = await res.text();
+      console.error("❌ Cloudinary error:", errorText);
+      throw new Error(`Upload failed: ${res.status} - ${errorText}`);
     }
     
-    const data = await response.json();
-    
-    if (!data.secure_url) {
-      throw new Error("Cloudinary response missing secure_url");
-    }
-    
-    console.log("✅ Cloudinary upload successful!");
-    console.log("📸 URL:", data.secure_url);
+    const data = await res.json();
+    console.log("✅ Upload success! URL:", data.secure_url);
     console.log("🆔 Public ID:", data.public_id);
     
-    return {
-      secure_url: data.secure_url,
-      public_id: data.public_id,
-      format: data.format,
-      bytes: data.bytes,
-      width: data.width,
-      height: data.height
-    };
+    return data;
     
   } catch (error) {
-    console.error("❌ Cloudinary upload error:", error);
-    throw new Error(`Failed to upload image: ${error.message}`);
+    console.error("❌ Upload failed:", error);
+    throw new Error(`Cloudinary upload failed: ${error.message}`);
   }
 }
