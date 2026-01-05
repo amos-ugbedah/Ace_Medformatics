@@ -179,7 +179,7 @@ export default function AdminMediaPage() {
         status: form.status,
         image_url: imageUrl,
         image_public_id: imagePublicId,
-        created_at_at: new Date().toISOString(),
+        updated_at_at: new Date().toISOString(),
       };
 
       // Add published_at if status is published
