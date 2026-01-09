@@ -5,10 +5,9 @@ import {
   FaPhone,
   FaWhatsapp,
   FaFacebook,
-  FaTwitter,
-  FaInstagram,
   FaLinkedin,
 } from "react-icons/fa";
+import { FaXTwitter } from "react-icons/fa6";
 import { supabase } from "../lib/supabaseClient";
 
 export default function Contact() {
@@ -30,7 +29,9 @@ export default function Contact() {
     setLoading(true);
     setSuccess("");
 
-    const { error } = await supabase.from("contact_messages").insert([formData]);
+    const { error } = await supabase
+      .from("contact_messages")
+      .insert([formData]);
 
     setSuccess(
       error
@@ -38,8 +39,14 @@ export default function Contact() {
         : "Message sent successfully! We will get back to you soon."
     );
 
-    if (!error)
-      setFormData({ full_name: "", email: "", subject: "", message: "" });
+    if (!error) {
+      setFormData({
+        full_name: "",
+        email: "",
+        subject: "",
+        message: "",
+      });
+    }
 
     setLoading(false);
   };
@@ -58,40 +65,79 @@ export default function Contact() {
         </div>
 
         {/* Contact Info */}
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 mb-14">
-          {[
-            [FaEnvelope, "Email", "acemedformatics20@gmail.com"],
-            [FaPhone, "Phone", "+234 703 228 7331\n+234 803 563 1828"],
-            [FaWhatsapp, "WhatsApp", "+234 703 228 7331"],
-          ].map(([Icon, title, value], i) => (
-            <div
-              key={i}
-              className="flex gap-4 p-6 bg-white shadow-sm dark:bg-gray-800 rounded-xl"
-            >
-              {Icon && (
-                <Icon className="mt-1 text-2xl text-acePurple dark:text-aceGreen" />
-              )}
-              <div>
-                <h3 className="font-medium">{title}</h3>
-                <p className="text-gray-600 whitespace-pre-line dark:text-gray-300">
-                  {value}
-                </p>
-              </div>
+        <div className="grid grid-cols-1 gap-6 mb-14 sm:grid-cols-2">
+          {/* Email */}
+          <div className="flex gap-4 p-6 bg-white shadow-sm dark:bg-gray-800 rounded-xl">
+            <FaEnvelope className="mt-1 text-2xl text-acePurple dark:text-aceGreen" />
+            <div>
+              <h3 className="font-medium">Email</h3>
+              <p className="text-gray-600 dark:text-gray-300">
+                acemedformatics20@gmail.com
+              </p>
             </div>
-          ))}
+          </div>
+
+          {/* Phone */}
+          <div className="flex gap-4 p-6 bg-white shadow-sm dark:bg-gray-800 rounded-xl">
+            <FaPhone className="mt-1 text-2xl text-acePurple dark:text-aceGreen" />
+            <div>
+              <h3 className="font-medium">Phone</h3>
+              <p className="text-gray-600 whitespace-pre-line dark:text-gray-300">
+                +234 703 228 7331
+                {"\n"}
+                +234 803 563 1828
+              </p>
+            </div>
+          </div>
+
+          {/* WhatsApp Group */}
+          <div className="flex gap-4 p-6 bg-white shadow-sm dark:bg-gray-800 rounded-xl">
+            <FaWhatsapp className="mt-1 text-2xl text-acePurple dark:text-aceGreen" />
+            <div>
+              <h3 className="font-medium">WhatsApp Community</h3>
+              <a
+                href="https://chat.whatsapp.com/BnVk3QLBCuI2TVA2KSPeVV"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-acePurple dark:text-aceGreen hover:underline"
+              >
+                Join our official WhatsApp group
+              </a>
+            </div>
+          </div>
         </div>
 
-        {/* Socials */}
-        <div className="flex justify-center gap-6 mb-14">
-          {[FaFacebook, FaTwitter, FaInstagram, FaLinkedin].map((Icon, i) => (
-            <Icon
-              key={i}
-              className="text-3xl transition text-acePurple dark:text-aceGreen hover:opacity-80"
-            />
-          ))}
+        {/* Social Media Links */}
+        <div className="flex justify-center gap-8 mb-14">
+          <a
+            href="https://www.facebook.com/share/17g368ZTHX/"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Ace Medformatics Facebook"
+          >
+            <FaFacebook className="text-3xl transition text-acePurple dark:text-aceGreen hover:opacity-80" />
+          </a>
+
+          <a
+            href="https://x.com/AMedformatics"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Ace Medformatics X"
+          >
+            <FaXTwitter className="text-3xl transition text-acePurple dark:text-aceGreen hover:opacity-80" />
+          </a>
+
+          <a
+            href="https://www.linkedin.com/in/ace-medformatics-3a8668341"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Ace Medformatics LinkedIn"
+          >
+            <FaLinkedin className="text-3xl transition text-acePurple dark:text-aceGreen hover:opacity-80" />
+          </a>
         </div>
 
-        {/* Form */}
+        {/* Contact Form */}
         <form
           onSubmit={handleSubmit}
           className="p-8 space-y-6 bg-white shadow-md dark:bg-gray-800 rounded-xl"
@@ -112,6 +158,7 @@ export default function Contact() {
                 name={field}
                 value={formData[field]}
                 onChange={handleChange}
+                required
                 className="w-full px-4 py-2 bg-transparent border border-gray-300 rounded-lg dark:border-gray-600 focus:ring-2 focus:ring-aceGreen"
               />
             </div>
@@ -124,6 +171,7 @@ export default function Contact() {
               name="message"
               value={formData.message}
               onChange={handleChange}
+              required
               className="w-full px-4 py-2 bg-transparent border border-gray-300 rounded-lg dark:border-gray-600 focus:ring-2 focus:ring-aceGreen"
             />
           </div>

@@ -1,111 +1,37 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react-swc'
-import { createHtmlPlugin } from 'vite-plugin-html'
-import viteCompression from 'vite-plugin-compression'
-
-// https://vite.dev/config/
-export default defineConfig({
-  plugins: [
-    react(),
-    createHtmlPlugin({
-      minify: true,
-      inject: {
-        data: {
-          title: 'Ace Medformatics',
-          version: process.env.npm_package_version || '1.0.1',
-          buildTime: new Date().toISOString(),
-        }
-      }
-    }),
-    viteCompression({
-      algorithm: 'gzip',
-      ext: '.gz',
-      threshold: 10240,
-    }),
-    viteCompression({
-      algorithm: 'brotliCompress',
-      ext: '.br',
-    }),
-  ],
-  
-  // Build optimization
-  build: {
-    rollupOptions: {
-      output: {
-        entryFileNames: 'assets/[name]-[hash].js',
-        chunkFileNames: 'assets/[name]-[hash].js',
-        assetFileNames: 'assets/[name]-[hash].[ext]',
-        manualChunks: {
-          'vendor-react': ['react', 'react-dom', 'react-router-dom'],
-          'vendor-icons': ['react-icons', 'lucide-react'],
-          'vendor-utils': ['@supabase/supabase-js', 'axios', 'framer-motion'],
-        }
-      }
-    },
-    minify: 'terser',
-    terserOptions: {
-      compress: {
-        drop_console: true,
-        drop_debugger: true
-      }
-    },
-    sourcemap: false, // Set to true for debugging in production
-    chunkSizeWarningLimit: 1000,
-  },
-  
-  server: {
-    port: 3000,
-    open: true,
-    headers: {
-      'Cache-Control': 'no-store',
-    }
-  },
-  
-  preview: {
-    port: 3001,
-    headers: {
-      'Cache-Control': 'no-store',
-    }
-  },
-  
-  define: {
-    __APP_VERSION__: JSON.stringify(process.env.npm_package_version || '1.0.1'),
-    __BUILD_TIME__: JSON.stringify(new Date().toISOString()),
-  },
-  
-  resolve: {
-    alias: {
-      '@': '/src',
-    }
-  },
-  
-  optimizeDeps: {
-    include: ['react', 'react-dom', 'react-router-dom'],
-    exclude: ['lucide-react'],
-  }
-}){
+{
   "name": "ace-medformatics",
-  "version": "1.0.1",
   "private": true,
+  "version": "1.0.1",
+  "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview"
   },
   "dependencies": {
-    "@supabase/supabase-js": "^2.0.0",
-    "axios": "^1.0.0",
-    "framer-motion": "^7.0.0",
-    "react": "^18.0.0",
-    "react-dom": "^18.0.0",
-    "react-icons": "^4.0.0",
-    "react-router-dom": "^6.0.0",
-    "lucide-react": "^0.300.0"
+    "@supabase/supabase-js": "^2.89.0",
+    "axios": "^1.13.2",
+    "framer-motion": "^12.23.26",
+    "lucide-react": "^0.562.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "react-helmet": "6.1.0",
+    "react-hook-form": "^7.69.0",
+    "react-icons": "^5.5.0",
+    "react-router-dom": "^7.11.0"
   },
   "devDependencies": {
-    "@vitejs/plugin-react-swc": "^3.0.0",
-    "vite": "^4.0.0",
-    "vite-plugin-compression": "^1.0.0",
-    "vite-plugin-html": "^3.0.0"
+    "@eslint/js": "^9.39.1",
+    "@types/react": "^19.2.5",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react-swc": "^4.2.2",
+    "autoprefixer": "^10.4.23",
+    "eslint": "^9.39.1",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "eslint-plugin-react-refresh": "^0.4.24",
+    "globals": "^16.5.0",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^3.4.17",
+    "vite": "^7.2.4"
   }
 }
