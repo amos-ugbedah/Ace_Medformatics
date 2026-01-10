@@ -22,13 +22,13 @@ export default function TeamCard({ name, role, bio, image }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
     >
-      {/* Image */}
-      <div className="relative w-full mb-6 overflow-hidden bg-gray-100 aspect-square rounded-xl dark:bg-gray-700">
+      {/* Image Container */}
+      <div className="relative w-full mb-6 overflow-hidden rounded-xl bg-gray-100 dark:bg-gray-700 aspect-[4/5] flex items-center justify-center">
         <img
           src={image}
           alt={name}
-          className="object-cover object-center w-full h-full"
           loading="lazy"
+          className="object-contain max-w-full max-h-full"
         />
       </div>
 
