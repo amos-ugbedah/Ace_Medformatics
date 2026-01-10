@@ -51,10 +51,10 @@ export default function Hero() {
           <div className="relative mt-10 overflow-hidden">
             <motion.div
               className="flex gap-4 w-max"
-              animate={{ x: ["0%", "-50%"] }} // scroll left by half of duplicated items
+              animate={{ x: ["0%", "-50%"] }}
               transition={{
                 repeat: Infinity,
-                duration: 45, // slow continuous movement
+                duration: 45,
                 ease: "linear",
               }}
             >
@@ -62,17 +62,21 @@ export default function Hero() {
               {[...mediaItems, ...mediaItems].map((item, index) => (
                 <div
                   key={`${item.id}-${index}`}
-                  className="min-w-[280px] bg-white text-gray-800 rounded-lg shadow-sm overflow-hidden"
+                  className="min-w-[280px] bg-white text-gray-800 rounded-lg shadow-sm overflow-hidden flex flex-col items-center"
                 >
+                  {/* Image Container */}
                   {item.image_url && (
-                    <img
-                      src={item.image_url}
-                      alt={item.title}
-                      className="object-cover w-full h-24"
-                    />
+                    <div className="flex items-center justify-center w-full h-32 overflow-hidden bg-gray-100">
+                      <img
+                        src={item.image_url}
+                        alt={item.title}
+                        className="object-contain w-full h-full"
+                      />
+                    </div>
                   )}
 
-                  <div className="p-3">
+                  {/* Text Content */}
+                  <div className="w-full p-3 text-center">
                     <span className="text-[11px] font-semibold uppercase text-acePurple">
                       {item.type}
                     </span>

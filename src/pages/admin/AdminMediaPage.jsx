@@ -5,9 +5,6 @@ import {
   FaEdit,
   FaTrash,
   FaPlus,
-  FaImage,
-  FaTimes,
-  FaExternalLinkAlt,
 } from "react-icons/fa";
 
 export default function AdminMediaPage() {
@@ -159,13 +156,15 @@ export default function AdminMediaPage() {
 
   /* ================= UI ================= */
   return (
-    <div className="p-6 mx-auto max-w-7xl">
+    <div className="p-6 mx-auto max-w-7xl font-inter">
       {notification && (
-        <div className={`fixed top-4 right-4 px-6 py-3 rounded shadow-lg ${
-          notification.type === "error"
-            ? "bg-red-100 text-red-800"
-            : "bg-green-100 text-green-800"
-        }`}>
+        <div
+          className={`fixed top-4 right-4 px-6 py-3 rounded shadow-lg ${
+            notification.type === "error"
+              ? "bg-red-100 text-red-800"
+              : "bg-green-100 text-green-800"
+          }`}
+        >
           {notification.message}
         </div>
       )}
@@ -179,9 +178,9 @@ export default function AdminMediaPage() {
             setForm(initialFormState);
             setImagePreview(null);
           }}
-          className="px-4 py-2 text-white bg-black rounded"
+          className="flex items-center gap-2 px-4 py-2 text-white bg-black rounded"
         >
-          <FaPlus className="inline mr-2" />
+          <FaPlus />
           Add Media
         </button>
       </div>
@@ -190,45 +189,94 @@ export default function AdminMediaPage() {
       {showForm && (
         <form
           onSubmit={handleSubmit}
-          className="p-6 mb-10 bg-white shadow rounded-xl"
+          className="p-6 mb-10 space-y-3 bg-white shadow rounded-xl"
         >
+          {/* Title */}
           <input
-            className="w-full p-2 mb-3 border rounded"
+            className="w-full p-3 mb-3 text-black placeholder-black border rounded focus:outline-none focus:ring-2 focus:ring-black"
             placeholder="Title"
             value={form.title}
             onChange={(e) => setForm({ ...form, title: e.target.value })}
             required
           />
 
+          {/* Slug */}
           <input
-            className="w-full p-2 mb-3 border rounded"
+            className="w-full p-3 mb-3 text-black placeholder-black border rounded focus:outline-none focus:ring-2 focus:ring-black"
             placeholder="Slug"
             value={form.slug}
             onChange={(e) => setForm({ ...form, slug: e.target.value })}
             required
           />
 
+          {/* Summary */}
           <textarea
-            className="w-full p-2 mb-3 border rounded"
+            className="w-full p-3 mb-3 text-black placeholder-black border rounded focus:outline-none focus:ring-2 focus:ring-black"
             placeholder="Summary"
             value={form.summary}
             onChange={(e) => setForm({ ...form, summary: e.target.value })}
           />
 
+          {/* Content */}
           <textarea
-            className="w-full p-2 mb-3 border rounded"
+            className="w-full p-3 mb-3 text-black placeholder-black border rounded focus:outline-none focus:ring-2 focus:ring-black"
             placeholder="Content"
             value={form.content}
             onChange={(e) => setForm({ ...form, content: e.target.value })}
           />
 
-          <input type="file" onChange={handleImageChange} />
+          {/* Type */}
+          <select
+            className="w-full p-3 mb-3 text-black border rounded focus:outline-none focus:ring-2 focus:ring-black"
+            value={form.type}
+            onChange={(e) => setForm({ ...form, type: e.target.value })}
+          >
+            <option value="press">Press</option>
+            <option value="article">Article</option>
+            <option value="news">News</option>
+            <option value="mention">Mention</option>
+            <option value="event">Event</option>
+          </select>
+
+          {/* Status */}
+          <select
+            className="w-full p-3 mb-3 text-black border rounded focus:outline-none focus:ring-2 focus:ring-black"
+            value={form.status}
+            onChange={(e) => setForm({ ...form, status: e.target.value })}
+          >
+            <option value="draft">Draft</option>
+            <option value="published">Publish</option>
+          </select>
+
+          {/* Featured checkbox */}
+          <label className="flex items-center gap-2 mb-3">
+            <input
+              type="checkbox"
+              checked={form.featured}
+              onChange={(e) =>
+                setForm({ ...form, featured: e.target.checked })
+              }
+            />
+            Mark as Featured
+          </label>
+
+          {/* Image */}
+          <div className="mb-3">
+            <input type="file" onChange={handleImageChange} />
+            {imagePreview && (
+              <img
+                src={imagePreview}
+                alt="Preview"
+                className="object-cover w-32 h-32 mt-2 rounded"
+              />
+            )}
+          </div>
 
           <button
-            disabled={loading}
+            disabled={loading || imageUploading}
             className="px-6 py-2 mt-4 text-white bg-black rounded"
           >
-            {loading ? "Saving..." : "Save Media"}
+            {loading || imageUploading ? "Saving..." : "Save Media"}
           </button>
         </form>
       )}
@@ -236,10 +284,15 @@ export default function AdminMediaPage() {
       {/* ================= LIST ================= */}
       <div className="grid gap-4">
         {media.map((item) => (
-          <div key={item.id} className="flex justify-between p-4 border rounded">
+          <div
+            key={item.id}
+            className="flex items-center justify-between p-4 border rounded"
+          >
             <div>
               <h3 className="font-semibold">{item.title}</h3>
-              <p className="text-sm text-gray-500">{item.status}</p>
+              <p className="text-sm text-gray-500 capitalize">
+                {item.type} • {item.status}
+              </p>
             </div>
             <div className="flex gap-2">
               <button onClick={() => startEditing(item)}>
