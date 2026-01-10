@@ -10,51 +10,44 @@ export default function Team() {
 
   useEffect(() => {
     async function fetchTeam() {
-      try {
-        const { data, error } = await supabase
-          .from("team_members")
-          .select("id, full_name, role, bio, profile_image_url, socials")
-          .order("display_order", { ascending: true });
+      const { data, error } = await supabase
+        .from("team_members")
+        .select("id, full_name, role, bio, profile_image_url, socials")
+        .order("display_order", { ascending: true });
 
-        if (error) console.error("Error fetching team:", error);
-        else setTeam(data);
-      } catch (err) {
-        console.error("Unexpected error fetching team:", err);
-      } finally {
-        setLoading(false);
-      }
+      if (!error) setTeam(data || []);
+      setLoading(false);
     }
 
     fetchTeam();
   }, []);
 
-  if (loading)
+  if (loading) {
     return (
-      <p className="py-20 text-center text-gray-700 dark:text-gray-300 font-inter">
-        Loading team...
+      <p className="py-20 text-center text-gray-600 dark:text-gray-300 font-inter">
+        Loading team…
       </p>
     );
+  }
 
   return (
-    <section className="min-h-screen px-4 py-20 transition-colors duration-300 bg-aceLight dark:bg-gray-900 font-inter">
+    <section className="min-h-screen px-4 py-20 bg-aceLight dark:bg-gray-900 font-inter">
       <div className="max-w-6xl mx-auto text-center">
         <motion.h1
           className="mb-16 text-4xl font-bold md:text-5xl text-acePurple dark:text-aceGreen"
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
         >
           Our Leadership & Team
         </motion.h1>
 
         <motion.div
-          className="grid grid-cols-1 gap-10 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4"
+          className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
           variants={{
-            hidden: {},
             visible: { transition: { staggerChildren: 0.15 } },
           }}
         >
